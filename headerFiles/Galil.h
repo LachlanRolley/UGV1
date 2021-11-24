@@ -70,7 +70,10 @@ class Galil {
 
 		// Operator overload for '<<' operator. So the user can say cout << Galil; This function should print out the
 		// output of GInfo and GVersion, with two newLines after each.
-		friend std::ostream& operator<<(std::ostream& output, Galil& galil);
+		
+		
+		
+		//friend std::ostream& operator<<(std::ostream& output, Galil& galil);
 
 
 	protected:
