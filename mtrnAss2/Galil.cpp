@@ -9,7 +9,37 @@
 
 
 
+//constructors 
+Galil::Galil() {// Default constructor. Initialize variables, open Galil connection and allocate memory. NOT AUTOMARKED
+	EmbeddedFunctions* Functions = new EmbeddedFunctions;	// Pointer to EmbeddedFunctions, through which all Galil Function calls will be made
+	GCon g;							// Connection handle for the Galil, passed through most Galil function calls
+	char ReadBuffer[1024];			// Buffer to restore responses from the Galil
+	double ControlParameters[3];	// Contains the controller gain values: K_p, K_i, K_d in that order 
+	int setPoint;
+	GCStringIn addy = "192.168.0.120";
 
+	GReturn a = Functions->GOpen(addy, &g);     // AIGHT so here g is just gona be an int but whenever u use this int, its gona refer to this connection we set up
+}
+Galil::Galil(EmbeddedFunctions* Funcs, GCStringIn address) {
+	EmbeddedFunctions* Functions = Funcs;	// Pointer to EmbeddedFunctions, through which all Galil Function calls will be made
+	GCon g;							// Connection handle for the Galil, passed through most Galil function calls
+	char ReadBuffer[1024];			// Buffer to restore responses from the Galil
+	double ControlParameters[3];	// Contains the controller gain values: K_p, K_i, K_d in that order 
+	int setPoint;
+	
+
+	GReturn a = Functions->GOpen(address, &g);     // AIGHT so here g is just gona be an int but whenever u use this int, its gona refer to this connection we set up
+	if (a == 0) {
+		printf("yo its not working bruh, couldnt connect\n");
+		printf("yo its not working bruh, couldnt connect\n");
+	}
+}
+
+
+//destuctors
+Galil::~Galil() {
+	Functions->GClose(g);
+}
 
 
 											
