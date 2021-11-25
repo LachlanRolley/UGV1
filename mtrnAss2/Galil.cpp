@@ -9,16 +9,23 @@
 
 
 
-//constructors 
+
+
+//constructors DONE
 Galil::Galil() {// Default constructor. Initialize variables, open Galil connection and allocate memory. NOT AUTOMARKED
 	Functions = new EmbeddedFunctions;	// Pointer to EmbeddedFunctions, through which all Galil Function calls will be made						// Connection handle for the Galil, passed through most Galil function call
-	GCStringIn addy = "192.168.0.120";
+	GCStringIn addy = "192.168.0.120 -d"; // d for dirrect
+	g = 0;
 
 	GReturn a = Functions->GOpen(addy, &g);     // AIGHT so here g is just gona be an int but whenever u use this int, its gona refer to this connection we set up
+	if (a == 0) {
+		printf("yo its not working bruh, couldnt connect\n");
+		printf("yo its not working bruh, couldnt connect\n");
+	}
 }
 Galil::Galil(EmbeddedFunctions* Funcs, GCStringIn address) {
 	Functions = Funcs;	// Pointer to EmbeddedFunctions, through which all Galil Function calls will be made
-			
+	g = 0;
 						// Connection handle for the Galil, passed through most Galil function call
 	GReturn a = Functions->GOpen(address, &g);     // AIGHT so here g is just gona be an int but whenever u use this int, its gona refer to this connection we set up
 	if (a == 0) {
@@ -27,53 +34,41 @@ Galil::Galil(EmbeddedFunctions* Funcs, GCStringIn address) {
 	}
 }
 
-//destuctors
+//destuctors  DONE
 Galil::~Galil() {
 	Functions->GClose(g);
 }
 
+// overall write to galil
+void Galil::sendGalil(){
 
+	Functions->GCommand(g, Command, ReadBuffer, sizeof(ReadBuffer), &NumRet);
+	//Then should check it actually worked but cbs atm
+}
 											
-// DIGITAL OUTPUTS
-						// Write to all 16 bits of digital output, 1 command to the Galil
-void Galil::DigitalOutput(uint16_t a) {
+// DIGITAL OUTPUTS DONE
+										
+void Galil::DigitalOutput(uint16_t a) { // Write to all 16 bits of digital output, 1 command to the Galil
+	// this one we want 2 8bit ints, seperated 
+	uint8_t lowB = a;
+	uint8_t highb = a >> 8;
+	sprintf_s(Command, sizeof(Command), "OP %d,%d:", lowB, highb);
+	sendGalil();
 	
 }
 void Galil::DigitalByteOutput(bool bank, uint8_t value) {// Write to one byte, either high or low byte, as specified by user in 'bank'
-	
+	if (bank) {// means we write to the high byte
+		sprintf_s(Command, sizeof(Command), "OP 0,%d:", value);
+	}
+	else {
+		sprintf_s(Command, sizeof(Command), "OP %d,0:", value);
+	}
+	sendGalil();
 }												// 0 = low, 1 = high
 void Galil::DigitalBitOutput(bool val, uint8_t bit) {			// Write single bit to digital outputs. 'bit' specifies which bit
-
+	sprintf_s(Command, sizeof(Command), "OB %d,%d:", bit, val);
+	sendGalil();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // DIGITAL INPUTS

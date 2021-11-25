@@ -16,6 +16,6 @@ using namespace System::Threading::Tasks;
 
 int main(void) {
 	EmbeddedFunctions* funcs = new EmbeddedFunctions();
-
+	// addy = "192.168.0.120 -d"
 	return 0;
 }

@@ -29,6 +29,7 @@ class Galil {
 		Galil(EmbeddedFunctions* Funcs, GCStringIn address);	// Constructor with EmbeddedFunciton initialization
 		~Galil();												// Default destructor. Deallocate memory and close Galil connection. NOT AUTOMARKED
 
+		
 		// DIGITAL OUTPUTS
 		void DigitalOutput(uint16_t value);						// Write to all 16 bits of digital output, 1 command to the Galil
 		void DigitalByteOutput(bool bank, uint8_t value);		// Write to one byte, either high or low byte, as specified by user in 'bank'
@@ -74,6 +75,9 @@ class Galil {
 		
 		
 		//friend std::ostream& operator<<(std::ostream& output, Galil& galil);
+	private:
+		// overall write to galil
+		void sendGalil();  // sends the command to galil and checks if it worked.
 
 
 	protected:
@@ -82,4 +86,6 @@ class Galil {
 		char ReadBuffer[1024];			// Buffer to restore responses from the Galil
 		double ControlParameters[3];	// Contains the controller gain values: K_p, K_i, K_d in that order 
 		int setPoint;					// Control Setpoint
+		GSize NumRet;					//number of bytes returns
+		char Command[100];				//stuff to send to GCommand
 };
