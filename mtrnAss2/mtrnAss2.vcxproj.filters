@@ -42,4 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\lib\gclibo_64.lib" />
+    <Library Include="..\lib\GalilControl_x64_Debug.lib" />
+    <Library Include="..\lib\gclib_64.lib" />
+  </ItemGroup>
 </Project>

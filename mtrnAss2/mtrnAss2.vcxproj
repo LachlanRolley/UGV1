@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{6BDF8C75-C281-4A42-B1E2-E0F129C650EB}</ProjectGuid>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>mtrnAss2</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
@@ -124,6 +124,11 @@
     <ClInclude Include="gclibo.h" />
     <ClInclude Include="gclib_errors.h" />
     <ClInclude Include="gclib_record.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\lib\GalilControl_x64_Debug.lib" />
+    <Library Include="..\lib\gclibo_64.lib" />
+    <Library Include="..\lib\gclib_64.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
