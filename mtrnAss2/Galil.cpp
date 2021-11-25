@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include<stdio.h>
 #include "EmbeddedFunctions.h"
-#include <string>
+#include <string.h>
 #include <iostream>
 #include <chrono>
 #include <Windows.h>
@@ -11,7 +11,7 @@
 
 
 
-//constructors DONE
+//CONSTRUCTORS DONE
 Galil::Galil() {// Default constructor. Initialize variables, open Galil connection and allocate memory. NOT AUTOMARKED
 	Functions = new EmbeddedFunctions;	// Pointer to EmbeddedFunctions, through which all Galil Function calls will be made						// Connection handle for the Galil, passed through most Galil function call
 	GCStringIn addy = "192.168.0.120 -d"; // d for dirrect
@@ -34,68 +34,102 @@ Galil::Galil(EmbeddedFunctions* Funcs, GCStringIn address) {
 	}
 }
 
-//destuctors  DONE
+//DESTRUCTORS  DONE
 Galil::~Galil() {
 	Functions->GClose(g);
 }
 
-// overall write to galil
+//WRITE TO GALIL
 void Galil::sendGalil(){
 
 	Functions->GCommand(g, Command, ReadBuffer, sizeof(ReadBuffer), &NumRet);
 	//Then should check it actually worked but cbs atm
 }
 											
-// DIGITAL OUTPUTS DONE
-										
+//DIGITAL OUTPUTS DONE								
 void Galil::DigitalOutput(uint16_t a) { // Write to all 16 bits of digital output, 1 command to the Galil
 	// this one we want 2 8bit ints, seperated 
 	uint8_t lowB = a;
 	uint8_t highb = a >> 8;
-	sprintf_s(Command, sizeof(Command), "OP %d,%d:", lowB, highb);
+	sprintf_s(Command, sizeof(Command), "OP %d,%d;", lowB, highb);
 	sendGalil();
 	
 }
 void Galil::DigitalByteOutput(bool bank, uint8_t value) {// Write to one byte, either high or low byte, as specified by user in 'bank'
 	if (bank) {// means we write to the high byte
-		sprintf_s(Command, sizeof(Command), "OP 0,%d:", value);
+		sprintf_s(Command, sizeof(Command), "OP 0,%d;", value);
 	}
 	else {
-		sprintf_s(Command, sizeof(Command), "OP %d,0:", value);
+		sprintf_s(Command, sizeof(Command), "OP %d,0;", value);
 	}
 	sendGalil();
 }												// 0 = low, 1 = high
 void Galil::DigitalBitOutput(bool val, uint8_t bit) {			// Write single bit to digital outputs. 'bit' specifies which bit
-	sprintf_s(Command, sizeof(Command), "OB %d,%d:", bit, val);
+	sprintf_s(Command, sizeof(Command), "OB %d,%d;", bit, val);
 	sendGalil();
 }
 
 
-// DIGITAL INPUTS
+//DIGITAL INPUTS 
 uint16_t Galil::DigitalInput() {				// Return the 16 bits of input data
+	//gona have to go 1 by one with MG @in[%d]
 	
-	
-	
-	uint16_t a = 5;
-	return a;
+	uint16_t final = 0;
+	uint16_t lowB = DigitalByteInput(0);
+	uint16_t highB = DigitalByteInput(1) << 8;
+
+	final = lowB || highB;
+
+
+	return final;
 }											// Query the digital inputs of the GALIL, See Galil command library @IN
 uint8_t Galil::DigitalByteInput(bool bank) {	// Read either high or low byte, as specified by user in 'bank'
-										// 0 = low, 1 = high
-	
+													// 0 = low, 1 = high				
+	uint8_t finNum = 0;
+	uint8_t mask = 0;
+	uint8_t offset = 0;
+	if (bank) offset = 8;
 
-	uint8_t a = 5;
-	return a;
+	for (uint8_t i = 0; i < 8; i++) {
+		//look through bits, if is 1, put it on a mask and || with final
+		if (DigitalBitInput(i + offset)) {
+			mask = 1 << i;
+		}
+
+		finNum = mask || finNum; 
+	}
+
+	return finNum;
 }
 bool Galil::DigitalBitInput(uint8_t bit) {		// Read single bit from current digital inputs. Above functions
 										// may use this function
+	//gona have to go 1 by one with MG @in[%d]
+	sprintf_s(Command, sizeof(Command), "MG @IN[%d]", bit);
+	sendGalil();
+	//aight here we will have a value in ReadBuffer, so we wana string compare if its 1.0000 or 0.0000
 
-	return true;
+	char oneString[1024] = "1.0000";  // might wana try ReadBuffer[0] == 1
+	if (strcmp(oneString, ReadBuffer) == 0) {
+		return true;
+	}
+	return false;
 }
 bool Galil::CheckSuccessfulWrite() {	// Check the string response from the Galil to check that the last 
 								// command executed correctly. 1 = succesful. NOT AUTOMARKED
-
-	return true;
+	//write always returns a ":"
+	if (ReadBuffer[0] == ':') return true;
+	return false;
 }
+
+
+
+
+
+
+
+
+
+
 
 // ANALOG FUNCITONS
 float Galil::AnalogInput(uint8_t channel) {						// Read Analog channel and return voltage	
