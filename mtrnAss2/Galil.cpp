@@ -118,6 +118,7 @@ bool Galil::DigitalBitInput(uint8_t bit) {		// Read single bit from current digi
 bool Galil::CheckSuccessfulWrite() {	// Check the string response from the Galil to check that the last 
 								// command executed correctly. 1 = succesful. NOT AUTOMARKED
 	//write always returns a ":"
+	if (NumRet > 1)return true;
 	if (ReadBuffer[0] == ':') return true;
 	return false;
 }
