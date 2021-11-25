@@ -91,7 +91,7 @@
       <AdditionalUsingDirectories>$(SolutionDir)\bin\x64</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>GalilControl_x64_Debug.lib;GalilControl_x64_Release.lib;gclib_64.lib;gclibo_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GalilControl_x64_Debug.lib;gclib_64.lib;gclibo_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
