@@ -160,19 +160,31 @@ void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the 
 
 // ENCODER / CONTROL FUNCTIONS
 void Galil::WriteEncoder() {								// Manually Set the encoder value to zero
+	//No clue what this shit does
+	sprintf_s(Command, sizeof(Command), "WE %d, %d;", 0, 0);
+	sendGalil();
 }
 int Galil::ReadEncoder() {									// Read from Encoder
 
-	int a = 5;
+	int a = 0;
+	//if you dont say which channel, both get spat out so lets just go with 0
+	sprintf_s(Command, sizeof(Command), "WE %d, %d;", 0, 0);
+	sendGalil();
+	a = atoi(ReadBuffer);
+
 	return a;
 }
 void Galil::setSetPoint(int s) {							// Set the desired setpoint for control loops, counts or counts/sec
+	setPoint = s;
 }
 void Galil::setKp(double gain) {							// Set the proportional gain of the controller used in controlLoop()
+	ControlParameters[0] = gain;
 }
 void Galil::setKi(double gain) {							// Set the integral gain of the controller used in controlLoop()
+	ControlParameters[1] = gain;
 }
 void Galil::setKd(double gain) {							// Set the derivative gain of the controller used in controlLoop()
+	ControlParameters[2] = gain;
 }
 //void Galil::PositionControl(bool debug, int Motorchannel) {	// Run the control loop. ReadEncoder() is the input to the loop. The motor is the output.
 													// The loop will run using the PID values specified in the data of this object, and has an 
