@@ -6,6 +6,7 @@
 #include <iostream>
 #include <chrono>
 #include <Windows.h>
+#include <stdlib.h>
 
 
 
@@ -104,7 +105,7 @@ uint8_t Galil::DigitalByteInput(bool bank) {	// Read either high or low byte, as
 bool Galil::DigitalBitInput(uint8_t bit) {		// Read single bit from current digital inputs. Above functions
 										// may use this function
 	//gona have to go 1 by one with MG @in[%d]
-	sprintf_s(Command, sizeof(Command), "MG @IN[%d]", bit);
+	sprintf_s(Command, sizeof(Command), "MG @IN[%d];", bit);
 	sendGalil();
 	//aight here we will have a value in ReadBuffer, so we wana string compare if its 1.0000 or 0.0000
 
@@ -122,27 +123,40 @@ bool Galil::CheckSuccessfulWrite() {	// Check the string response from the Galil
 }
 
 
-
-
-
-
-
-
-
-
-
-// ANALOG FUNCITONS
+// ANALOG FUNCITONS DONE
 float Galil::AnalogInput(uint8_t channel) {						// Read Analog channel and return voltage	
-
-	float a = 5;
-	return a;
+	float final = 0;
+	
+	sprintf_s(Command, sizeof(Command), "MG @AN[%d];", channel);
+	sendGalil();
+	
+	final = atof(ReadBuffer);  // mby need to use strtof
+	
+	return final;
 }
 void Galil::AnalogOutput(uint8_t channel, double voltage) {		// Write to any channel of the Galil, send voltages as
 														// 2 decimal place in the command string
+	sprintf_s(Command, sizeof(Command), "AO %d, %f;", channel, voltage);
+	sendGalil();
+
 }
 void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the range of the input channel with
 														// the desired range code
+	//heaps confused but it looks like u write the channel u want and for range, theres specific codes, (1 == +-5v,  2== +-10v.......)
+	sprintf_s(Command, sizeof(Command), "AQ %d, %d;", channel, range);
+	sendGalil();
 }
+
+
+
+
+
+
+
+
+
+
+
 
 // ENCODER / CONTROL FUNCTIONS
 void Galil::WriteEncoder() {								// Manually Set the encoder value to zero
