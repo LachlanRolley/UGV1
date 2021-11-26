@@ -32,7 +32,7 @@ int main(void) {
 
 
 	// DIGITAL OUTPUTS
-	myGalil.DigitalOutput(252);
+	myGalil.DigitalOutput(5000);
 	Console::ReadKey();
 	myGalil.DigitalByteOutput(true, 4);		// Write to one byte, either high or low byte, as specified by user in 'bank'
 	Console::ReadKey();
@@ -40,7 +40,8 @@ int main(void) {
 	myGalil.DigitalBitOutput(true, 15);			// Write single bit to digital outputs. 'bit' specifies which bit
 	Console::ReadKey();
 
-	myGalil.DigitalOutput(5);
+	myGalil.DigitalOutput(1472);
+
 
 	// DIGITAL INPUTS
 	uint16_t aa = myGalil.DigitalInput();				// Return the 16 bits of input data
@@ -48,15 +49,15 @@ int main(void) {
 	Console::ReadKey();
 
 
-	aa = myGalil.DigitalByteInput(false);	// Read either high or low byte, as specified by user in 'bank'
-	printf(" low byte digital input is %u\n", (unsigned)aa);
+	aa = myGalil.DigitalByteInput(true);	// Read either high or low byte, as specified by user in 'bank'
+	printf(" high byte digital input is %u\n", (unsigned)aa);
 	Console::ReadKey();
 	
 	
-	if (myGalil.DigitalBitInput(3)) {
-		printf(" bit 3 is 1\n");
+	if (myGalil.DigitalBitInput(10)) {
+		printf(" bit 10 is 1\n");
 	}// Read single bit from current digital inputs. Above functions
-	else printf(" bit 3 is 0\n");
+	else printf(" bit 10 is 0\n");
 	Console::ReadKey();
 	// 0 = low, 1 = high
 
@@ -80,26 +81,25 @@ int main(void) {
 	Console::ReadKey();
 	myGalil.AnalogOutput(3, 5.00);		// Write to any channel of the Galil, send voltages as
 
-	if (myGalil.CheckSuccessfulWrite()) printf("successful write channel 3 voltage should be 5\n");		// Read single bit from current digital inputs. Above functions
-	else printf("not successful write\n");
-	Console::ReadKey();
-
-	float c = myGalil.AnalogInput(3);
-	printf("analoge inp 3 is now %f\n", c);
+	
 	Console::ReadKey();// 2 decimal place in the command string
 	
-	void AnalogInputRange(uint8_t channel, uint8_t range);	// Configure the range of the input channel with
-															// the desired range code
+	
 
 // ENCODER / CONTROL FUNCTIONS
-	void WriteEncoder();								// Manually Set the encoder value to zero
-	int ReadEncoder();									// Read from Encoder
-	void setSetPoint(int s);							// Set the desired setpoint for control loops, counts or counts/sec
-	void setKp(double gain);							// Set the proportional gain of the controller used in controlLoop()
-	void setKi(double gain);							// Set the integral gain of the controller used in controlLoop()
-	void setKd(double gain);							// Set the derivative gain of the controller used in controlLoop()
-	void PositionControl(bool debug, int Motorchannel);	// Run the control loop. ReadEncoder() is the input to the loop. The motor is the output.
+	int xx = myGalil.ReadEncoder();									// Read from Encoder
+	printf("the encoder value is %d\n", xx);
+	myGalil.WriteEncoder();								// Manually Set the encoder value to zero
+	xx = myGalil.ReadEncoder();									// Read from Encoder
+	printf("the encoder value is %d\n", xx);
 	
+	myGalil.setKp( 69);							// Set the proportional gain of the controller used in controlLoop()
+	myGalil.setKi( 69);							// Set the integral gain of the controller used in controlLoop()
+	myGalil.setKd( 69);							// Set the derivative gain of the controller used in controlLoop()
+	
+	//void PositionControl(bool debug, int Motorchannel);	// Run the control loop. ReadEncoder() is the input to the loop. The motor is the output.
+	//void setSetPoint(int 69);							// Set the desired setpoint for control loops, counts or counts/sec
+
 	
 	//myGalil.WriteEncoder();
 	//myGalil.setKp(5 / 3000.0);

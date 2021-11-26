@@ -60,6 +60,7 @@ void Galil::DigitalOutput(uint16_t a) { // Write to all 16 bits of digital outpu
 	// this one we want 2 8bit ints, seperated 
 	uint8_t lowB = a;
 	uint16_t highb = a >> 8;
+	//printf("lowb is %d, highb is %d\n", lowB, highb);
 	sprintf_s(Command, sizeof(Command), "OP %d,%d;", lowB, highb);
 	sendGalil();
 	
@@ -86,8 +87,8 @@ uint16_t Galil::DigitalInput() {				// Return the 16 bits of input data
 	uint16_t final = 0;
 	uint16_t lowB = DigitalByteInput(0);
 	uint16_t highB = DigitalByteInput(1) << 8;
-
-	final = lowB || highB;
+	printf("lowb is %d, highb is %d\n", lowB, highB);
+	final = lowB | highB;
 
 
 	return final;
@@ -105,7 +106,7 @@ uint8_t Galil::DigitalByteInput(bool bank) {	// Read either high or low byte, as
 			mask = 1 << i;
 		}
 
-		finNum = mask || finNum; 
+		finNum = mask | finNum; 
 	}
 
 	return finNum;
@@ -178,7 +179,7 @@ int Galil::ReadEncoder() {									// Read from Encoder
 
 	int a = 0;
 	//if you dont say which channel, both get spat out so lets just go with 0
-	sprintf_s(Command, sizeof(Command), "WE %d, %d;", 0, 0);
+	sprintf_s(Command, sizeof(Command), "QE 0;");
 	sendGalil();
 	a = atoi(ReadBuffer);
 
@@ -195,6 +196,7 @@ void Galil::setKi(double gain) {							// Set the integral gain of the controlle
 }
 void Galil::setKd(double gain) {							// Set the derivative gain of the controller used in controlLoop()
 	ControlParameters[2] = gain;
+	
 }
 //void Galil::PositionControl(bool debug, int Motorchannel) {	// Run the control loop. ReadEncoder() is the input to the loop. The motor is the output.
 													// The loop will run using the PID values specified in the data of this object, and has an 
