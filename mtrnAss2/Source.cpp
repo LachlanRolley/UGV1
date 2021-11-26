@@ -25,11 +25,23 @@ int main(void) {
 
 	
 	printf("galil setup\n");
-	myGalil.DigitalOutput(0);
+	
+	myGalil.setKp(5 / 3000.0);
+	myGalil.setKi(1 / 5000.0);
+	myGalil.setKd(0);
+	myGalil.setSetPoint(3000);
+	//myGalil.PositionControl(1, 0);
+	myGalil.SpeedControl(1,0);	
+
 
 	Console::ReadKey();
 
 
+
+
+	
+
+	/*
 
 	// DIGITAL OUTPUTS
 	myGalil.DigitalOutput(5000);
@@ -93,23 +105,10 @@ int main(void) {
 	xx = myGalil.ReadEncoder();									// Read from Encoder
 	printf("the encoder value is %d\n", xx);
 	
-	myGalil.setKp( 69);							// Set the proportional gain of the controller used in controlLoop()
-	myGalil.setKi( 69);							// Set the integral gain of the controller used in controlLoop()
-	myGalil.setKd( 69);							// Set the derivative gain of the controller used in controlLoop()
-	
-	//void PositionControl(bool debug, int Motorchannel);	// Run the control loop. ReadEncoder() is the input to the loop. The motor is the output.
-	//void setSetPoint(int 69);							// Set the desired setpoint for control loops, counts or counts/sec
+	*/
 
 	
-	//myGalil.WriteEncoder();
-	//myGalil.setKp(5 / 3000.0);
-	//myGalil.setKi(1 / 5000.0);
-	//myGalil.setKd(0);
-	//myGalil.setSetPoint(3000);
-
-
-	Console::ReadKey();
-
+	
 
 	
 	return 0;

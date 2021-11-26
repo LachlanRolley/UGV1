@@ -88,7 +88,7 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\headerFiles</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>$(SolutionDir)\bin\x64</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(SolutionDir)\x64\Debug</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>GalilControl_x64_Debug.lib;gclib_64.lib;gclibo_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
