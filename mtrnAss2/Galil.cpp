@@ -198,17 +198,21 @@ void Galil::setKd(double gain) {							// Set the derivative gain of the control
 	ControlParameters[2] = gain;
 	
 }
-//void Galil::PositionControl(bool debug, int Motorchannel) {	// Run the control loop. ReadEncoder() is the input to the loop. The motor is the output.
-													// The loop will run using the PID values specified in the data of this object, and has an 
-													// automatic timeout of 10s. You do not need to implement this function, it is defined in
-													// GalilControl.lib
-//}
-//void Galil::SpeedControl(bool debug, int Motorchannel) {	// same as above. Setpoint interpreted as counts per second
-//}
+
 
 
 // Operator overload for '<<' operator. So the user can say cout << Galil; This function should print out the
 // output of GInfo and GVersion, with two newLines after each.
-//std::ostream& operator<<(std::ostream& output, Galil& galil) {
+std::ostream& operator<<(std::ostream& output, Galil& galil) {
+	//output << "wadup beyach"; 
+	
+	galil.Functions->GInfo(galil.g, galil.ReadBuffer, sizeof(galil.ReadBuffer));
+	galil.Functions->GVersion(galil.ReadBuffer2, sizeof(galil.ReadBuffer2));
 
-//}
+	
+	output << galil.ReadBuffer << "\n\n" << galil.ReadBuffer2 << "\n\n";
+	
+	
+	
+	return output;
+}

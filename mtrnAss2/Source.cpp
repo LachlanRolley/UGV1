@@ -13,7 +13,7 @@ using namespace System;
 using namespace System::IO;
 using namespace System::Collections::Generic;
 using namespace System::Threading::Tasks;
-
+using namespace std;
 
 
 int main(void) {
@@ -31,8 +31,9 @@ int main(void) {
 	myGalil.setKd(0);
 	myGalil.setSetPoint(3000);
 	//myGalil.PositionControl(1, 0);
-	myGalil.SpeedControl(1,0);	
+	//myGalil.SpeedControl(1,0);	
 
+	cout << myGalil;
 
 	Console::ReadKey();
 

@@ -78,7 +78,7 @@ public:
 
 
 
-	//friend std::ostream& operator<<(std::ostream& output, Galil& galil);
+	friend std::ostream& operator<<(std::ostream& output, Galil& galil);
 	
 	
 
@@ -91,4 +91,6 @@ protected:
 	int setPoint;					// Control Setpoint
 	GSize NumRet;					//number of bytes returns
 	char Command[100];				//stuff to send to GCommand
+	char ReadBuffer2[1024];			// Buffer to restore responses from the Galil
+
 };
