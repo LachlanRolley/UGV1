@@ -22,8 +22,23 @@ int main(void) {
 
 	printf("wadup\n");
 	printf("wadup\n");
-	while (!kbhit()) {
+	Galil myGalil(funcs, "192.168.0.120 -d");
 
+	printf("galil setup\n");
+	printf("galil setup\n");
+
+	
+
+	myGalil.DigitalOutput(8);
+	//myGalil.WriteEncoder();
+	//myGalil.setKp(5 / 3000.0);
+	//myGalil.setKi(1 / 5000.0);
+	//myGalil.setKd(0);
+
+	//myGalil.setSetPoint(3000);
+
+	while (!kbhit()) {
+		//printf("i think shes working");
 	}
 	return 0;
 }

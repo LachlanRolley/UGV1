@@ -19,7 +19,7 @@ Galil::Galil() {// Default constructor. Initialize variables, open Galil connect
 	g = 0;
 
 	GReturn a = Functions->GOpen(addy, &g);     // AIGHT so here g is just gona be an int but whenever u use this int, its gona refer to this connection we set up
-	if (a == 0) {
+	if (g == 0) {
 		printf("yo its not working bruh, couldnt connect\n");
 		printf("yo its not working bruh, couldnt connect\n");
 	}
@@ -29,7 +29,7 @@ Galil::Galil(EmbeddedFunctions* Funcs, GCStringIn address) {
 	g = 0;
 						// Connection handle for the Galil, passed through most Galil function call
 	GReturn a = Functions->GOpen(address, &g);     // AIGHT so here g is just gona be an int but whenever u use this int, its gona refer to this connection we set up
-	if (a == 0) {
+	if (g == 0) {
 		printf("yo its not working bruh, couldnt connect\n");
 		printf("yo its not working bruh, couldnt connect\n");
 	}
@@ -42,6 +42,14 @@ Galil::~Galil() {
 
 //WRITE TO GALIL
 void Galil::sendGalil(){
+	/*int a = (int)g;
+	printf("g is %d\n",a);
+	printf("the command string is %s\n", Command);
+
+	printf("the address of g is %p\n", &g);
+	printf("the address of Command is %p\n", &Command);
+	printf("the address of ReadBuffer is %p\n", &ReadBuffer);
+	printf("the address of NumRet is %p\n", &NumRet);*/
 
 	Functions->GCommand(g, Command, ReadBuffer, sizeof(ReadBuffer), &NumRet);
 	//Then should check it actually worked but cbs atm

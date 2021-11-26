@@ -32,6 +32,7 @@ public:
 	// overall write to galil
 	void sendGalil();  // sends the command to galil and checks if it worked.
 
+	
 
 	// DIGITAL OUTPUTS
 	void DigitalOutput(uint16_t value);						// Write to all 16 bits of digital output, 1 command to the Galil
@@ -78,7 +79,7 @@ public:
 
 
 	//friend std::ostream& operator<<(std::ostream& output, Galil& galil);
-
+	void printGCon();
 	
 
 
