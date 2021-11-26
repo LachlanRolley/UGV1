@@ -29,7 +29,11 @@ class Galil {
 		Galil(EmbeddedFunctions* Funcs, GCStringIn address);	// Constructor with EmbeddedFunciton initialization
 		~Galil();												// Default destructor. Deallocate memory and close Galil connection. NOT AUTOMARKED
 
-		
+		// overall write to galil
+		void sendGalil();  // sends the command to galil and checks if it worked.
+
+
+
 		// DIGITAL OUTPUTS
 		void DigitalOutput(uint16_t value);						// Write to all 16 bits of digital output, 1 command to the Galil
 		void DigitalByteOutput(bool bank, uint8_t value);		// Write to one byte, either high or low byte, as specified by user in 'bank'
@@ -75,9 +79,8 @@ class Galil {
 		
 		
 		friend std::ostream& operator<<(std::ostream& output, Galil& galil);
-	private:
-		// overall write to galil
-		void sendGalil();  // sends the command to galil and checks if it worked.
+	
+		
 
 
 	protected:
