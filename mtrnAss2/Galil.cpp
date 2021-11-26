@@ -59,7 +59,7 @@ void Galil::sendGalil(){
 void Galil::DigitalOutput(uint16_t a) { // Write to all 16 bits of digital output, 1 command to the Galil
 	// this one we want 2 8bit ints, seperated 
 	uint8_t lowB = a;
-	uint8_t highb = a >> 8;
+	uint16_t highb = a >> 8;
 	sprintf_s(Command, sizeof(Command), "OP %d,%d;", lowB, highb);
 	sendGalil();
 	
@@ -116,9 +116,10 @@ bool Galil::DigitalBitInput(uint8_t bit) {		// Read single bit from current digi
 	sprintf_s(Command, sizeof(Command), "MG @IN[%d];", bit);
 	sendGalil();
 	//aight here we will have a value in ReadBuffer, so we wana string compare if its 1.0000 or 0.0000
-
-	char oneString[1024] = "1.0000";  // might wana try ReadBuffer[0] == 1
-	if (strcmp(oneString, ReadBuffer) == 0) {
+	
+	//char oneString[1024] = "1.0000";  // might wana try ReadBuffer[0] == 1
+	//printf("Readbuffer[0], [1] is %d, %d\n", ReadBuffer[0], ReadBuffer[1]);
+	if (ReadBuffer[1] == 49) {
 		return true;
 	}
 	return false;

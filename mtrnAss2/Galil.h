@@ -79,7 +79,7 @@ public:
 
 
 	//friend std::ostream& operator<<(std::ostream& output, Galil& galil);
-	void printGCon();
+	
 	
 
 
